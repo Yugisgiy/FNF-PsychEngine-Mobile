@@ -25,14 +25,14 @@ class MainMenuState extends MusicBeatState
 
 	//Centered/Text options
 	var optionShit:Array<String> = [
-		'story_mode',
+		'play',
 		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
-		'credits'
+		'creditsway'
 	];
 
 	var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
-	var rightOption:String = 'options';
+	var rightOption:String = 'optionsway';
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -170,7 +170,7 @@ class MainMenuState extends MusicBeatState
 
 				if(leftItem != null && FlxG.mouse.overlaps(leftItem))
 				{
-					allowMouse = true;
+					allowMouse = false;
 					if(selectedItem != leftItem)
 					{
 						curColumn = LEFT;
@@ -179,7 +179,7 @@ class MainMenuState extends MusicBeatState
 				}
 				else if(rightItem != null && FlxG.mouse.overlaps(rightItem))
 				{
-					allowMouse = true;
+					allowMouse = false;
 					if(selectedItem != rightItem)
 					{
 						curColumn = RIGHT;
@@ -200,7 +200,7 @@ class MainMenuState extends MusicBeatState
 							{
 								dist = distance;
 								distItem = i;
-								allowMouse = true;
+								allowMouse = false;
 							}
 						}
 					}
@@ -288,7 +288,7 @@ class MainMenuState extends MusicBeatState
 					{
 						switch (option)
 						{
-							case 'story_mode':
+							case 'play':
 								MusicBeatState.switchState(new StoryMenuState());
 							case 'freeplay':
 								MusicBeatState.switchState(new FreeplayState());
@@ -303,7 +303,7 @@ class MainMenuState extends MusicBeatState
 								MusicBeatState.switchState(new AchievementsMenuState());
 							#end
 
-							case 'credits':
+							case 'creditsway':
 								MusicBeatState.switchState(new CreditsState());
 							case 'options':
 								MusicBeatState.switchState(new OptionsState());
