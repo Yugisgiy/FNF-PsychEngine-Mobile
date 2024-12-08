@@ -102,7 +102,7 @@ class MainMenuState extends MusicBeatState
 		add(fnfVer);
 		changeItem();
 
-		//#if ACHIEVEMENTS_ALLOWED
+		#if ACHIEVEMENTS_ALLOWED
 		// Unlocks "Freaky on a Friday Night" achievement if it's a Friday and between 18:00 PM and 23:59 PM
 		var leDate = Date.now();
 		if (leDate.getDay() == 5 && leDate.getHours() >= 18)
@@ -326,7 +326,7 @@ class MainMenuState extends MusicBeatState
 						FlxTween.tween(memb, {alpha: 0}, 0.4, {ease: FlxEase.quadOut});
 					}
 				}
-				else CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
+				else CoolUtil.browserLoad('https://youtu.be/dQw4w9WgXcQ?si=LiHxjV04xmvOkZ7W');
 			}
 			else if (controls.justPressed('debug_1') || touchPad.buttonE.justPressed)
 			{
