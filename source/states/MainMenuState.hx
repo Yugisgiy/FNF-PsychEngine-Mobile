@@ -326,7 +326,7 @@ class MainMenuState extends MusicBeatState
 						FlxTween.tween(memb, {alpha: 0}, 0.4, {ease: FlxEase.quadOut});
 					}
 				}
-				else CoolUtil.browserLoad('https://youtu.be/dQw4w9WgXcQ?si=LiHxjV04xmvOkZ7W');
+				else CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
 			}
 			else if (controls.justPressed('debug_1') || touchPad.buttonE.justPressed)
 			{
