@@ -1,4 +1,3 @@
-
 package states;
 
 import flixel.FlxObject;
@@ -15,7 +14,7 @@ enum MainMenuColumn {
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = 'PsychEngine Troll'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = 'Troll 1.0'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 	public static var curColumn:MainMenuColumn = CENTER;
 	var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
@@ -29,7 +28,7 @@ class MainMenuState extends MusicBeatState
 		'story_mode',
 		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
-		//'credits'
+		'credits'
 	];
 
 	var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
@@ -260,7 +259,7 @@ class MainMenuState extends MusicBeatState
 			if (controls.ACCEPT || (FlxG.mouse.overlaps(menuItems, FlxG.camera) && FlxG.mouse.justPressed && allowMouse))
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
-				//if (optionShit[curSelected] != 'donate')
+				if (optionShit[curSelected] != 'donate')
 				{
 					selectedSomethin = true;
 					FlxG.mouse.visible = false;
@@ -365,5 +364,5 @@ class MainMenuState extends MusicBeatState
 		selectedItem.centerOffsets();
 		camFollow.y = selectedItem.getGraphicMidpoint().y;
 	}
-    }
-        
+		}
+				
