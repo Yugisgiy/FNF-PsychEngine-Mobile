@@ -14,7 +14,7 @@ enum MainMenuColumn {
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = 'light mode'; // This is also used for Discord RPC
+	public static var psychEngineVersion:String = 'Light Engine 1.0'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 	public static var curColumn:MainMenuColumn = CENTER;
 	var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
@@ -26,9 +26,10 @@ class MainMenuState extends MusicBeatState
 	//Centered/Text options
 	var optionShit:Array<String> = [
 		'story_mode',
-		'freeplay',
+		//'freeplay',
 		#if MODS_ALLOWED 'mods', #end
 		//'credits'
+		'Extras'
 	];
 
 	var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
@@ -307,6 +308,8 @@ class MainMenuState extends MusicBeatState
 								MusicBeatState.switchState(new CreditsState());
 							case 'options':
 								MusicBeatState.switchState(new OptionsState());
+							case 'Extras':
+								MusicBeatState.switchState(new FreeplayState());
 								OptionsState.onPlayState = false;
 								if (PlayState.SONG != null)
 								{
