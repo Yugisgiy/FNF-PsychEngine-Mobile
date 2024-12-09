@@ -560,12 +560,12 @@ class TitleState extends MusicBeatState
 				case 2:
 					createCoolText(['Psych Engine by'], 40);
 				case 4:
+					addMoreText('Yugisgiy', 40);
 					addMoreText('Shadow Mario', 40);
-					addMoreText('Riveren', 40);
 				case 5:
 					deleteCoolText();
 				case 6:
-					createCoolText(['Not associated', 'with'], -40);
+					createCoolText(['madness not combat', 'without'], -40);
 				case 8:
 					addMoreText('newgrounds', -40);
 					ngSpr.visible = true;
@@ -579,11 +579,11 @@ class TitleState extends MusicBeatState
 				case 13:
 					deleteCoolText();
 				case 14:
-					addMoreText('Friday');
+					addMoreText('light');
 				case 15:
-					addMoreText('Night');
+					addMoreText('mode');
 				case 16:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+					addMoreText('engine'); // credTextShit.text += '\nFunkin';
 
 				case 17:
 					skipIntro();
