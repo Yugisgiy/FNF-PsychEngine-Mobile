@@ -26,10 +26,11 @@ class MainMenuState extends MusicBeatState
 	//Centered/Text options
 	var optionShit:Array<String> = [
 		'story_mode',
-		//'freeplay',
+		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
 		//'credits'
 		'Extras'
+		'Gallery'
 	];
 
 	var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
@@ -290,7 +291,7 @@ class MainMenuState extends MusicBeatState
 						switch (option)
 						{
 							case 'story_mode':
-								MusicBeatState.switchState(new PlaySongState());
+								MusicBeatState.switchState(new StoryMenuState());
 							case 'freeplay':
 								MusicBeatState.switchState(new FreeplayState());
 
@@ -309,7 +310,7 @@ class MainMenuState extends MusicBeatState
 							case 'options':
 								MusicBeatState.switchState(new OptionsState());
 							case 'Extras':
-								MusicBeatState.switchState(new FreeplayState());
+								MusicBeatState.switchState(new PlaySongState());
 								OptionsState.onPlayState = false;
 								if (PlayState.SONG != null)
 								{
