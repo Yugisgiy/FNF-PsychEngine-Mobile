@@ -268,9 +268,9 @@ class CreditsState extends MusicBeatState
 		var translatedCredits:String = Paths.mods(folder + '/data/credits-${ClientPrefs.data.language}.txt');
 		#end
 
-		if (#if TRANSLATIONS_ALLOWED ((FileSystem.exists(translatedCredits) #if android || Paths.filesystem.exists(translatedCredits) #end) && (creditsFile = translatedCredits) == translatedCredits) || #end (FileSystem.exists(creditsFile) #if android || Paths.filesystem.exists(creditsFile) #end))
+		if (#if TRANSLATIONS_ALLOWED (FileSystem.exists(translatedCredits) && (creditsFile = translatedCredits) == translatedCredits) || #end FileSystem.exists(creditsFile))
 		{
-			var firstarray:Array<String> = #if android Paths.filesystem.exists(creditsFile) ? Paths.filesystem.getContent(creditsFile).split('\n') : #end File.getContent(creditsFile).split('\n');
+			var firstarray:Array<String> = File.getContent(creditsFile).split('\n');
 			for(i in firstarray)
 			{
 				var arr:Array<String> = i.replace('\\n', '\n').split("::");

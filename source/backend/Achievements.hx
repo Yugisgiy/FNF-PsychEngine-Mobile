@@ -223,9 +223,9 @@ class Achievements {
 	inline static function loadAchievementJson(path:String, addMods:Bool = true)
 	{
 		var retVal:Array<Dynamic> = null;
-		if(FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end) {
+		if(FileSystem.exists(path)) {
 			try {
-				var rawJson:String = #if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path).trim() : #end File.getContent(path).trim();
+				var rawJson:String = File.getContent(path).trim();
 				if(rawJson != null && rawJson.length > 0) retVal = tjson.TJSON.parse(rawJson); //Json.parse('{"achievements": $rawJson}').achievements;
 				
 				if(addMods && retVal != null)

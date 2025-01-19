@@ -113,12 +113,12 @@ class WeekData {
 		#if MODS_ALLOWED
 		for (i in 0...directories.length) {
 			var directory:String = directories[i] + 'weeks/';
-			if(FileSystem.exists(directory) #if android || Paths.filesystem.exists(directory) #end) {
+			if(FileSystem.exists(directory)) {
 				var listOfWeeks:Array<String> = CoolUtil.coolTextFile(directory + 'weekList.txt');
 				for (daWeek in listOfWeeks)
 				{
 					var path:String = directory + daWeek + '.json';
-					if(FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end)
+					if(FileSystem.exists(path))
 					{
 						addWeek(daWeek, path, directories[i], i, originalLength);
 					}
@@ -127,7 +127,7 @@ class WeekData {
 				for (file in Paths.readDirectory(directory))
 				{
 					var path = haxe.io.Path.join([directory, file]);
-					if ((!FileSystem.isDirectory(path) #if android || Paths.filesystem.isDirectory(path) #end) && file.endsWith('.json'))
+					if (!FileSystem.isDirectory(path) && file.endsWith('.json'))
 					{
 						addWeek(file.substr(0, file.length - 5), path, directories[i], i, originalLength);
 					}
@@ -163,8 +163,8 @@ class WeekData {
 	private static function getWeekFile(path:String):WeekFile {
 		var rawJson:String = null;
 		#if MODS_ALLOWED
-		if(FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end) {
-			rawJson = #if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path);
+		if(FileSystem.exists(path)) {
+			rawJson = File.getContent(path);
 		}
 		#else
 		if(OpenFlAssets.exists(path)) {

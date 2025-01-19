@@ -16,7 +16,7 @@ class PsychFlxAnimate extends OriginalFlxAnimate
 			var trimmed:String = pathOrStr.trim();
 			trimmed = trimmed.substr(trimmed.length - 5).toLowerCase();
 
-			if(trimmed == '.json') myJson = #if android Paths.filesystem.exists(myJson) ? Paths.filesystem.getContent(myJson) : #end File.getContent(myJson); //is a path
+			if(trimmed == '.json') myJson = File.getContent(myJson); //is a path
 			animJson = cast haxe.Json.parse(_removeBOM(myJson));
 		}
 		else animJson = cast myJson;
@@ -29,12 +29,12 @@ class PsychFlxAnimate extends OriginalFlxAnimate
 
 		if(trimmed == '.json') //Path is json
 		{
-			myData = #if android Paths.filesystem.exists(pathOrStr) ? Paths.filesystem.getContent(pathOrStr) : #end File.getContent(pathOrStr);
+			myData = File.getContent(pathOrStr);
 			isXml = false;
 		}
 		else if (trimmed.substr(1) == '.xml') //Path is xml
 		{
-			myData = #if android Paths.filesystem.exists(pathOrStr) ? Paths.filesystem.getContent(pathOrStr) : #end File.getContent(pathOrStr);
+			myData = File.getContent(pathOrStr);
 			isXml = true;
 		}
 		myData = _removeBOM(myData);

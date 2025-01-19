@@ -19,7 +19,7 @@ class CoolUtil
 	{
 		var daList:String = null;
 		#if (sys && MODS_ALLOWED)
-		if(FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end) daList =  #if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path);
+		if(FileSystem.exists(path)) daList = File.getContent(path);
 		#else
 		if(Assets.exists(path)) daList = Assets.getText(path);
 		#end

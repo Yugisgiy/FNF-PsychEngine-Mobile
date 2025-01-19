@@ -350,8 +350,8 @@ class LoadingState extends MusicBeatState
 
 				#if MODS_ALLOWED
 				var moddyFile:String = Paths.modsJson('$folder/preload');
-				if (FileSystem.exists(moddyFile) #if android || Paths.filesystem.exists(moddyFile) #end) json = Json.parse(#if android Paths.filesystem.exists(moddyFile) ? Paths.filesystem.getContent(moddyFile) : #end File.getContent(moddyFile));
-				else json = Json.parse(#if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path));
+				if (FileSystem.exists(moddyFile)) json = Json.parse(File.getContent(moddyFile));
+				else json = Json.parse(File.getContent(path));
 				#else
 				json = Json.parse(Assets.getText(path));
 				#end
@@ -566,7 +566,7 @@ class LoadingState extends MusicBeatState
 			img = img.trim();
 			#if flxanimate
 			var animToFind:String = Paths.getPath('images/$img/Animation.json', TEXT);
-			if (#if MODS_ALLOWED FileSystem.exists(animToFind) #if android || Paths.filesystem.exists(animToFind) #end || #end Assets.exists(animToFind))
+			if (#if MODS_ALLOWED FileSystem.exists(animToFind) || #end Assets.exists(animToFind))
 				isAnimateAtlas = true;
 			#end
 
@@ -616,9 +616,9 @@ class LoadingState extends MusicBeatState
 		//trace('precaching sound: $file');
 		if(!Paths.currentTrackedSounds.exists(file))
 		{
-			if (#if sys FileSystem.exists(file) #if android || Paths.filesystem.exists(file) #end || #end OpenFlAssets.exists(file, SOUND))
+			if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, SOUND))
 			{
-				var sound:Sound = #if sys #if android Paths.filesystem.exists(file) ? Sound.fromAudioBuffer(lime.media.AudioBuffer.fromBytes(Paths.filesystem.readBytes(file))) : #end Sound.fromFile(file) #else OpenFlAssets.getSound(file, false) #end;
+				var sound:Sound = #if sys Sound.fromFile(file) #else OpenFlAssets.getSound(file, false) #end;
 				mutex.acquire();
 				Paths.currentTrackedSounds.set(file, sound);
 				mutex.release();
@@ -648,10 +648,10 @@ class LoadingState extends MusicBeatState
 			if (!Paths.currentTrackedAssets.exists(requestKey))
 			{
 				var file:String = Paths.getPath(requestKey, IMAGE);
-				if (#if sys FileSystem.exists(file) #if android || Paths.filesystem.exists(file) #end || #end OpenFlAssets.exists(file, IMAGE))
+				if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, IMAGE))
 				{
 					#if sys
-					var bitmap:BitmapData = #if android Paths.filesystem.exists(file) ? BitmapData.fromBytes(Paths.filesystem.readBytes(file)) : #end BitmapData.fromFile(file);
+					var bitmap:BitmapData = BitmapData.fromFile(file);
 					#else
 					var bitmap:BitmapData = OpenFlAssets.getBitmapData(file, false);
 					#end

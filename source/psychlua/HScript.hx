@@ -77,7 +77,7 @@ class HScript extends Iris
 		{
 			var f:String = file.replace('\\', '/');
 			if(f.contains('/') && !f.contains('\n')) {
-				scriptThing = Paths.filesystem.exists(f) ? Paths.filesystem.getContent(f) : File.getContent(f);
+				scriptThing = File.getContent(f);
 				scriptName = f;
 			}
 		}

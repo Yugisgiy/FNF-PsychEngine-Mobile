@@ -1,7 +1,5 @@
 package backend;
 
-import haxe.io.Path;
-import lime.media.AudioBuffer;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
@@ -20,9 +18,6 @@ import flash.media.Sound;
 
 import haxe.Json;
 
-#if android
-import lime.system.DocumentSystem;
-#end
 
 #if MODS_ALLOWED
 import backend.Mods;
@@ -31,7 +26,6 @@ import backend.Mods;
 @:access(openfl.display.BitmapData)
 class Paths
 {
-	public static var filesystem:DocumentSystem = null;
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
 
@@ -110,9 +104,6 @@ class Paths
 			if (parentfolder != null) customFile = '$parentfolder/$file';
 
 			var modded:String = modFolders(customFile);
-			#if android
-			if(filesystem.exists(modded)) return modded;
-			#end
 			if(FileSystem.exists(modded)) return modded;
 		}
 		#end
@@ -159,15 +150,6 @@ class Paths
 	{
 		#if MODS_ALLOWED
 		var file:String = modsVideo(key);
-		#if android
-		if(filesystem.exists(file))
-		{
-			var altFile = StorageUtil.cacheDir + "videos-data/" + file;
-			FileSystem.createDirectory(Path.directory(altFile));
-			File.saveBytes(altFile, filesystem.readBytes(file));
-			return altFile;
-		}
-		#end
 		if(FileSystem.exists(file)) return file;
 		#end
 		return 'assets/videos/$key.$VIDEO_EXT';
@@ -214,10 +196,6 @@ class Paths
 			#if MODS_ALLOWED
 			if (FileSystem.exists(file))
 				bitmap = BitmapData.fromFile(file);
-			#if android
-			else if (filesystem.exists(file))
-				bitmap = BitmapData.fromBytes(filesystem.readBytes(file));
-			#end
 			else #end if (OpenFlAssets.exists(file, IMAGE))
 				bitmap = OpenFlAssets.getBitmapData(file);
 
@@ -256,16 +234,7 @@ class Paths
 	{
 		var path:String = getPath(key, TEXT, !ignoreMods);
 		#if sys
-		#if android
-		if (filesystem.exists(path))
-			return filesystem.getContent(path);
-		else if (FileSystem.exists(path))
-			return File.getContent(path);
-		else
-			return null;
-		#else
 		return (FileSystem.exists(path)) ? File.getContent(path) : null;
-		#end
 		#else
 		return (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
 		#end
@@ -276,15 +245,6 @@ class Paths
 		var folderKey:String = Language.getFileTranslation('fonts/$key');
 		#if MODS_ALLOWED
 		var file:String = modFolders(folderKey);
-		#if android
-		if(filesystem.exists(file))
-		{
-			var altFile = StorageUtil.cacheDir + "fonts-data/" + file;
-			FileSystem.createDirectory(Path.directory(altFile));
-			File.saveBytes(altFile, filesystem.readBytes(file));
-			return altFile;
-		}
-		#end
 		if(FileSystem.exists(file)) return file;
 		#end
 		return 'assets/$folderKey';
@@ -299,19 +259,9 @@ class Paths
 			if(parentFolder == 'songs') modKey = 'songs/$key';
 
 			for(mod in Mods.getGlobalMods())
-			{
-				#if android
-				if (filesystem.exists(mods('$mod/$modKey')))
-					return true;
-				#end
 				if (FileSystem.exists(mods('$mod/$modKey')))
 					return true;
-			}
 
-			#if android
-			if (filesystem.exists(mods(Mods.currentModDirectory + '/' + modKey)) || filesystem.exists(mods(modKey)))
-				return true;
-			#end
 			if (FileSystem.exists(mods(Mods.currentModDirectory + '/' + modKey)) || FileSystem.exists(mods(modKey)))
 				return true;
 		}
@@ -325,10 +275,10 @@ class Paths
 		var imageLoaded:FlxGraphic = image(key, parentFolder, allowGPU);
 
 		var myXml:Dynamic = getPath('images/$key.xml', TEXT, parentFolder, true);
-		if(OpenFlAssets.exists(myXml) #if MODS_ALLOWED || ((FileSystem.exists(myXml) #if android || filesystem.exists(myXml) #end) && (useMod = true) #end))
+		if(OpenFlAssets.exists(myXml) #if MODS_ALLOWED || (FileSystem.exists(myXml) && (useMod = true)) #end )
 		{
 			#if MODS_ALLOWED
-			return FlxAtlasFrames.fromSparrow(imageLoaded, (useMod ? #if android filesystem.exists(myXml) ? filesystem.getContent(myXml) : #end File.getContent(myXml) : myXml));
+			return FlxAtlasFrames.fromSparrow(imageLoaded, (useMod ? File.getContent(myXml) : myXml));
 			#else
 			return FlxAtlasFrames.fromSparrow(imageLoaded, myXml);
 			#end
@@ -336,10 +286,10 @@ class Paths
 		else
 		{
 			var myJson:Dynamic = getPath('images/$key.json', TEXT, parentFolder, true);
-			if(OpenFlAssets.exists(myJson) #if MODS_ALLOWED || ((FileSystem.exists(myJson) #if android || filesystem.exists(myJson) #end) && (useMod = true)) #end)
+			if(OpenFlAssets.exists(myJson) #if MODS_ALLOWED || (FileSystem.exists(myJson) && (useMod = true)) #end )
 			{
 				#if MODS_ALLOWED
-				return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, (useMod ? #if android filesystem.exists(myJson) ? filesystem.getContent(myJson) : #end File.getContent(myJson) : myJson));
+				return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, (useMod ? File.getContent(myJson) : myJson));
 				#else
 				return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, myJson);
 				#end
@@ -375,9 +325,9 @@ class Paths
 		var xmlExists:Bool = false;
 
 		var xml:String = modsXml(key);
-		if(FileSystem.exists(xml) #if android || filesystem.exists(xml) #end) xmlExists = true;
+		if(FileSystem.exists(xml)) xmlExists = true;
 
-		return FlxAtlasFrames.fromSparrow(imageLoaded, (xmlExists ? #if android filesystem.exists(xml) ? filesystem.getContent(xml) : #end File.getContent(xml) : getPath(Language.getFileTranslation('images/$key') + '.xml', TEXT, parentFolder)));
+		return FlxAtlasFrames.fromSparrow(imageLoaded, (xmlExists ? File.getContent(xml) : getPath(Language.getFileTranslation('images/$key') + '.xml', TEXT, parentFolder)));
 		#else
 		return FlxAtlasFrames.fromSparrow(imageLoaded, getPath(Language.getFileTranslation('images/$key') + '.xml', TEXT, parentFolder));
 		#end
@@ -390,9 +340,9 @@ class Paths
 		var txtExists:Bool = false;
 		
 		var txt:String = modsTxt(key);
-		if(FileSystem.exists(txt) #if android || filesystem.exists(txt) #end) txtExists = true;
+		if(FileSystem.exists(txt)) txtExists = true;
 
-		return FlxAtlasFrames.fromSpriteSheetPacker(imageLoaded, (txtExists ? #if android filesystem.exists(txt) ? filesystem.getContent(txt) : #end File.getContent(txt) : getPath(Language.getFileTranslation('images/$key') + '.txt', TEXT, parentFolder)));
+		return FlxAtlasFrames.fromSpriteSheetPacker(imageLoaded, (txtExists ? File.getContent(txt) : getPath(Language.getFileTranslation('images/$key') + '.txt', TEXT, parentFolder)));
 		#else
 		return FlxAtlasFrames.fromSpriteSheetPacker(imageLoaded, getPath(Language.getFileTranslation('images/$key') + '.txt', TEXT, parentFolder));
 		#end
@@ -405,9 +355,9 @@ class Paths
 		var jsonExists:Bool = false;
 
 		var json:String = modsImagesJson(key);
-		if(FileSystem.exists(json) #if android || filesystem.exists(json) #end) jsonExists = true;
+		if(FileSystem.exists(json)) jsonExists = true;
 
-		return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, (jsonExists ? #if android filesystem.exists(json) ? filesystem.getContent(json) : #end File.getContent(json) : getPath(Language.getFileTranslation('images/$key') + '.json', TEXT, parentFolder)));
+		return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, (jsonExists ? File.getContent(json) : getPath(Language.getFileTranslation('images/$key') + '.json', TEXT, parentFolder)));
 		#else
 		return FlxAtlasFrames.fromTexturePackerJson(imageLoaded, getPath(Language.getFileTranslation('images/$key') + '.json', TEXT, parentFolder));
 		#end
@@ -429,10 +379,7 @@ class Paths
 		if(!currentTrackedSounds.exists(file))
 		{
 			#if sys
-			#if android
-			if (filesystem.exists(file))
-				currentTrackedSounds.set(file, Sound.fromAudioBuffer(AudioBuffer.fromBytes(filesystem.readBytes(file))));
-			else #end if(FileSystem.exists(file))
+			if(FileSystem.exists(file))
 				currentTrackedSounds.set(file, Sound.fromFile(file));
 			#else
 			if(OpenFlAssets.exists(file, SOUND))
@@ -479,7 +426,7 @@ class Paths
 		if(Mods.currentModDirectory != null && Mods.currentModDirectory.length > 0)
 		{
 			var fileToCheck:String = mods(Mods.currentModDirectory + '/' + key);
-			if(FileSystem.exists(fileToCheck) #if android || filesystem.exists(fileToCheck) #end)
+			if(FileSystem.exists(fileToCheck))
 				return fileToCheck;
 			#if linux
 			else
@@ -494,7 +441,7 @@ class Paths
 		for(mod in Mods.getGlobalMods())
 		{
 			var fileToCheck:String = mods(mod + '/' + key);
-			if(FileSystem.exists(fileToCheck) #if android || filesystem.exists(fileToCheck) #end)
+			if(FileSystem.exists(fileToCheck))
 				return fileToCheck;
 			#if linux
 			else
@@ -564,13 +511,13 @@ class Paths
 		if(spriteJson != null)
 		{
 			changedAtlasJson = true;
-			spriteJson = #if android filesystem.exists(spriteJson) ? filesystem.getContent(spriteJson) : #end File.getContent(spriteJson);
+			spriteJson = File.getContent(spriteJson);
 		}
 
 		if(animationJson != null) 
 		{
 			changedAnimJson = true;
-			animationJson = #if android filesystem.exists(animationJson) ? filesystem.getContent(animationJson) : #end File.getContent(animationJson);
+			animationJson = File.getContent(animationJson);
 		}
 
 		// is folder or image path
@@ -628,7 +575,7 @@ class Paths
 	public static function readDirectory(directory:String):Array<String>
 	{
 		#if MODS_ALLOWED
-		return filesystem.exists(directory) ? filesystem.readDirectory(directory) : FileSystem.readDirectory(directory);
+		return FileSystem.readDirectory(directory);
 		#else
 		var dirs:Array<String> = [];
 		for(dir in Assets.list().filter(folder -> folder.startsWith(directory)))

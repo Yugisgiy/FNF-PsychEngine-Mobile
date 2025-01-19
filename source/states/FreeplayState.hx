@@ -476,7 +476,7 @@ class FreeplayState extends MusicBeatState
 		{
 			var path:String = Paths.getPath('characters/$char.json', TEXT);
 			#if MODS_ALLOWED
-			var character:Dynamic = Json.parse(#if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path));
+			var character:Dynamic = Json.parse(File.getContent(path));
 			#else
 			var character:Dynamic = Json.parse(Assets.getText(path));
 			#end

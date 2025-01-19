@@ -124,12 +124,12 @@ class LuaUtils
 
 		var settings:Map<String, Dynamic> = FlxG.save.data.modSettings.get(modName);
 		var path:String = Paths.mods('$modName/data/settings.json');
-		if(FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end)
+		if(FileSystem.exists(path))
 		{
 			if(settings == null || !settings.exists(saveTag))
 			{
 				if(settings == null) settings = new Map<String, Dynamic>();
-				var data:String = #if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path);
+				var data:String = File.getContent(path);
 				try
 				{
 					//FunkinLua.luaTrace('getModSetting: Trying to find default value for "$saveTag" in Mod: "$modName"');

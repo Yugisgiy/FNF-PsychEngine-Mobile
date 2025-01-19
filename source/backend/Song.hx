@@ -142,8 +142,8 @@ class Song
 		_lastPath = Paths.json('$formattedFolder/$formattedSong');
 
 		#if MODS_ALLOWED
-		if(FileSystem.exists(_lastPath) #if android || Paths.filesystem.exists(_lastPath) #end)
-			rawData = #if android Paths.filesystem.exists(_lastPath) ? Paths.filesystem.getContent(_lastPath) : #end File.getContent(_lastPath);
+		if(FileSystem.exists(_lastPath))
+			rawData = File.getContent(_lastPath);
 		else
 		#end
 			rawData = Assets.getText(_lastPath);

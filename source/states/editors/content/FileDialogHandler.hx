@@ -103,7 +103,7 @@ class FileDialogHandler extends FlxBasic
 	{
 		@:privateAccess
 		this.path = _fileRef.__path;
-		this.data = #if android Paths.filesystem.exists(this.path) ? Paths.filesystem.getContent(this.path) : #end File.getContent(this.path);
+		this.data = File.getContent(this.path);
 		this.completed = true;
 		trace('Loaded file from: $path');
 

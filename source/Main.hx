@@ -15,9 +15,6 @@ import lime.system.System as LimeSystem;
 #if linux
 import lime.graphics.Image;
 #end
-#if android
-import lime.system.DocumentSystem;
-#end
 #if COPYSTATE_ALLOWED
 import states.CopyState;
 #end
@@ -141,27 +138,6 @@ class Main extends Sprite
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
-
-		#if android
-		final uriFile:String = StorageUtil.rootDir + ".uri";
-		if (!FileSystem.exists(uriFile))
-		{
-			StorageUtil.selectDocumentTreeDirectory(function(uri:String) {
-				var fo = File.write(uriFile);
-				fo.writeString(uri);
-				fo.close();
-				Paths.filesystem = new DocumentSystem(uri);
-			}, true);
-		}
-		else
-		{
-			var fi = File.read(uriFile);
-			var uri = fi.readAll().toString();
-			Paths.filesystem = new DocumentSystem(uri);
-			trace('got uri: ' + uri);
-		}
-		#end
-		
 		addChild(new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);

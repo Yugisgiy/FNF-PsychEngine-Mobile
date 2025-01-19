@@ -283,7 +283,7 @@ class AlphaCharacter extends FlxSprite
 	{
 		var path:String = Paths.getPath('images/$request.json');
 		#if MODS_ALLOWED
-		if(!FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end)
+		if(!FileSystem.exists(path))
 		#else
 		if(!Assets.exists(path, TEXT))
 		#end
@@ -293,7 +293,7 @@ class AlphaCharacter extends FlxSprite
 		try
 		{
 			#if MODS_ALLOWED
-			var data:Dynamic = Json.parse(#if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path));
+			var data:Dynamic = Json.parse(File.getContent(path));
 			#else
 			var data:Dynamic = Json.parse(Assets.getText(path));
 			#end

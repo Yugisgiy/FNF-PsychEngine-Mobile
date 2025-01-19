@@ -37,7 +37,7 @@ class LanguageSubState extends MusicBeatSubstate
 					{
 						var path:String = '$directory/$file';
 						#if MODS_ALLOWED 
-						var txt:String = #if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path);
+						var txt:String = File.getContent(path);
 						#else
 						var txt:String = Assets.getText(path);
 						#end

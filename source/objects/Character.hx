@@ -111,7 +111,7 @@ class Character extends FlxSprite
 
 		var path:String = Paths.getPath(characterPath, TEXT);
 		#if MODS_ALLOWED
-		if (!FileSystem.exists(path) #if android || Paths.filesystem.exists(path) #end)
+		if (!FileSystem.exists(path))
 		#else
 		if (!Assets.exists(path))
 		#end
@@ -125,7 +125,7 @@ class Character extends FlxSprite
 		try
 		{
 			#if MODS_ALLOWED
-			loadCharacterFile(Json.parse(#if android Paths.filesystem.exists(path) ? Paths.filesystem.getContent(path) : #end File.getContent(path)));
+			loadCharacterFile(Json.parse(File.getContent(path)));
 			#else
 			loadCharacterFile(Json.parse(Assets.getText(path)));
 			#end

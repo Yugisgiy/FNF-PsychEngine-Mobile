@@ -770,7 +770,7 @@ class PlayState extends MusicBeatState
 		var luaFile:String = 'characters/$name.lua';
 		#if MODS_ALLOWED
 		var replacePath:String = Paths.modFolders(luaFile);
-		if(FileSystem.exists(replacePath) #if android || Paths.filesystem.exists(replacePath) #end)
+		if(FileSystem.exists(replacePath))
 		{
 			luaFile = replacePath;
 			doPush = true;
@@ -778,7 +778,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			luaFile = Paths.getSharedPath(luaFile);
-			if(FileSystem.exists(luaFile) #if android || Paths.filesystem.exists(luaFile) #end)
+			if(FileSystem.exists(luaFile))
 				doPush = true;
 		}
 		#else
@@ -806,7 +806,7 @@ class PlayState extends MusicBeatState
 		var scriptFile:String = 'characters/' + name + '.hx';
 		#if MODS_ALLOWED
 		var replacePath:String = Paths.modFolders(scriptFile);
-		if(FileSystem.exists(replacePath) #if android || Paths.filesystem.exists(replacePath) #end)
+		if(FileSystem.exists(replacePath))
 		{
 			scriptFile = replacePath;
 			doPush = true;
@@ -815,7 +815,7 @@ class PlayState extends MusicBeatState
 		#end
 		{
 			scriptFile = Paths.getSharedPath(scriptFile);
-			if(FileSystem.exists(scriptFile) #if android || Paths.filesystem.exists(scriptFile) #end)
+			if(FileSystem.exists(scriptFile))
 				doPush = true;
 		}
 
@@ -853,7 +853,7 @@ class PlayState extends MusicBeatState
 		var fileName:String = Paths.video(name);
 
 		#if sys
-		if (FileSystem.exists(fileName) #if android || Paths.filesystem.exists(fileName) #end)
+		if (FileSystem.exists(fileName))
 		#else
 		if (OpenFlAssets.exists(fileName))
 		#end
@@ -3303,10 +3303,10 @@ class PlayState extends MusicBeatState
 	{
 		#if MODS_ALLOWED
 		var luaToLoad:String = Paths.modFolders(luaFile);
-		if(!FileSystem.exists(luaToLoad) #if android || Paths.filesystem.exists(luaToLoad) #end)
+		if(!FileSystem.exists(luaToLoad))
 			luaToLoad = Paths.getSharedPath(luaFile);
 
-		if(FileSystem.exists(luaToLoad ) #if android || Paths.filesystem.exists(luaToLoad) #end)
+		if(FileSystem.exists(luaToLoad))
 		#elseif sys
 		var luaToLoad:String = Paths.getSharedPath(luaFile);
 		if(OpenFlAssets.exists(luaToLoad))
@@ -3327,13 +3327,13 @@ class PlayState extends MusicBeatState
 	{
 		#if MODS_ALLOWED
 		var scriptToLoad:String = Paths.modFolders(scriptFile);
-		if(!FileSystem.exists(scriptToLoad) #if android || Paths.filesystem.exists(scriptToLoad) #end)
+		if(!FileSystem.exists(scriptToLoad))
 			scriptToLoad = Paths.getSharedPath(scriptFile);
 		#else
 		var scriptToLoad:String = Paths.getSharedPath(scriptFile);
 		#end
 
-		if(FileSystem.exists(scriptToLoad) #if android || Paths.filesystem.exists(scriptToLoad) #end)
+		if(FileSystem.exists(scriptToLoad))
 		{
 			if (Iris.instances.exists(scriptToLoad)) return false;
 
@@ -3625,16 +3625,16 @@ class PlayState extends MusicBeatState
 			var frag:String = folder + name + '.frag';
 			var vert:String = folder + name + '.vert';
 			var found:Bool = false;
-			if(FileSystem.exists(frag) #if android || Paths.filesystem.exists(frag) #end)
+			if(FileSystem.exists(frag))
 			{
-				frag = #if android Paths.filesystem.exists(frag) ? Paths.filesystem.getContent(frag) : #end File.getContent(frag);
+				frag = File.getContent(frag);
 				found = true;
 			}
 			else frag = null;
 
-			if(FileSystem.exists(vert) #if android || Paths.filesystem.exists(vert) #end)
+			if(FileSystem.exists(vert))
 			{
-				vert = #if android Paths.filesystem.exists(vert) ? Paths.filesystem.getContent(vert) : #end File.getContent(vert);
+				vert = File.getContent(vert);
 				found = true;
 			}
 			else vert = null;

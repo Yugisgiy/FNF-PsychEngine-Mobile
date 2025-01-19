@@ -109,7 +109,7 @@ class School extends BaseStage
 	{
 		var file:String = Paths.txt('$songName/${songName}Dialogue_${ClientPrefs.data.language}'); //Checks for vanilla/Senpai dialogue
 		#if MODS_ALLOWED
-		if (!FileSystem.exists(file) #if android && !Paths.filesystem.exists(file) #end)
+		if (!FileSystem.exists(file))
 		#else
 		if (!OpenFlAssets.exists(file))
 		#end
@@ -118,7 +118,7 @@ class School extends BaseStage
 		}
 
 		#if MODS_ALLOWED
-		if (!FileSystem.exists(file) #if android && !Paths.filesystem.exists(file) #end)
+		if (!FileSystem.exists(file))
 		#else
 		if (!OpenFlAssets.exists(file))
 		#end
