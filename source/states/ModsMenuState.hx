@@ -885,7 +885,7 @@ class ModItem extends FlxSpriteGroup
 		}
 		
 		var bmp:BitmapData = null;
-		if (FileSystem.exists(file)) bmp = BitmapData.fromFile(file);
+		if (FileSystem.exists(file)) bmp = #if android (Paths.filesystem != null && Paths.filesystem.exists(file)) ? BitmapData.fromBytes(Paths.filesystem.readBytes(file)) : #end BitmapData.fromFile(file);
 		else isPixel = false;
 
 		if(FileSystem.exists(file))

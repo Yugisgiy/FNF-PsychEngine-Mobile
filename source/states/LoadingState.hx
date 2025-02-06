@@ -618,7 +618,11 @@ class LoadingState extends MusicBeatState
 		{
 			if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, SOUND))
 			{
-				var sound:Sound = #if sys Sound.fromFile(file) #else OpenFlAssets.getSound(file, false) #end;
+				#if sys
+				var sound:Sound = #if android (Paths.filesystem != null && Paths.filesystem.exists(file)) ? Sound.fromAudioBuffer(lime.media.AudioBuffer.fromBytes(Paths.filesystem.readBytes(file))) : #end Sound.fromFile(file);
+				#else
+				var sound:Sound = OpenFlAssets.getSound(file, false);
+				#end
 				mutex.acquire();
 				Paths.currentTrackedSounds.set(file, sound);
 				mutex.release();
@@ -651,7 +655,7 @@ class LoadingState extends MusicBeatState
 				if (#if sys FileSystem.exists(file) || #end OpenFlAssets.exists(file, IMAGE))
 				{
 					#if sys
-					var bitmap:BitmapData = BitmapData.fromFile(file);
+					var bitmap:BitmapData = #if android (Paths.filesystem != null && Paths.filesystem.exists(file)) ? BitmapData.fromBytes(Paths.filesystem.readBytes(file)) : #end BitmapData.fromFile(file);
 					#else
 					var bitmap:BitmapData = OpenFlAssets.getBitmapData(file, false);
 					#end

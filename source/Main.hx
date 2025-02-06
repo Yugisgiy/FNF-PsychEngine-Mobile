@@ -76,6 +76,25 @@ class Main extends Sprite
 		#end
 		backend.CrashHandler.init();
 
+		#if android
+		final uriFile:String = StorageUtil.rootDir + ".uri";
+		if (!FileSystem.exists(uriFile))
+		{
+			StorageUtil.selectDocumentTreeDirectory(function(uri:String) {
+				File.saveContent(uriFile, uri);
+				Paths.filesystem = new lime.system.DocumentSystem(uri);
+				trace('got uri: ' + uri);
+			}, true);
+		}
+		else
+		{
+			var uri = File.getContent(uriFile);
+			trace('got uri: ' + uri);
+			Paths.filesystem = new lime.system.DocumentSystem(uri);
+			trace("created document tree");
+		}
+		#end
+
 		#if windows
 		// DPI Scaling fix for windows 
 		// this shouldn't be needed for other systems

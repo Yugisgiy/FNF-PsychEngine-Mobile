@@ -22,6 +22,9 @@
 
 package mobile.backend;
 
+import lime.system.JNI;
+import lime.ui.FileDialog;
+import lime.ui.FileDialogType;
 import lime.system.System as LimeSystem;
 import haxe.io.Path;
 import haxe.Exception;
@@ -35,6 +38,9 @@ class StorageUtil
 	#if sys
 	// root directory, used for handling the saved storage type and path
 	public static final rootDir:String = LimeSystem.applicationStorageDirectory;
+	#if android
+	public static final cacheDir:String = AndroidContext.getCacheDir() + '/';
+	#end
 
 	public static function getStorageDirectory(?force:Bool = false):String
 	{
@@ -124,6 +130,20 @@ class StorageUtil
 
 		daPath = Path.addTrailingSlash(daPath.endsWith("\n") ? daPath.substr(0, daPath.length - 1) : daPath);
 		return daPath;
+	}
+
+	public static function selectDocumentTreeDirectory(onSelect:String->Void, getPresistentAccess:Bool = false):Void
+	{
+		final fd = new FileDialog();
+		fd.onSelect.add(function(uri:String)
+		{
+			if (getPresistentAccess)
+			{
+				JNI.createStaticMethod('org/haxe/lime/FileDialog', 'getPersistableURIAccess', '(Ljava/lang/String;)V')(uri);
+			}
+			onSelect(uri);
+		});
+		fd.browse(OPEN_DIRECTORY);
 	}
 	#end
 	#end

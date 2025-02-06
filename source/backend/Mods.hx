@@ -171,7 +171,7 @@ class Mods
 					list.disabled.push(dat[0]);
 			}
 		} catch(e) {
-			trace(e);
+			trace(e.details());
 		}
 		#end
 		return list;
@@ -195,7 +195,7 @@ class Mods
 				}
 			}
 		} catch(e) {
-			trace(e);
+			trace(e.details());
 		}
 		
 		// Scan for folders that aren't on modsList.txt yet
