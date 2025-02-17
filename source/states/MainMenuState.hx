@@ -6,10 +6,6 @@ import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
 
-enum MainMenuColumn {
-	LEFT;
-	CENTER;
-	RIGHT;
 }
 
 class MainMenuState extends MusicBeatState
@@ -20,19 +16,15 @@ class MainMenuState extends MusicBeatState
 	var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
-	var leftItem:FlxSprite;
-	var rightItem:FlxSprite;
 
-	//Centered/Text options
+
 	var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
 		'credits'
+		'options'
 	];
-
-	var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
-	var rightOption:String = 'options';
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -78,21 +70,6 @@ class MainMenuState extends MusicBeatState
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
-
-		for (num => option in optionShit)
-		{
-			var item:FlxSprite = createMenuItem(option, 0, (num * 140) + 90);
-			item.y += (4 - optionShit.length) * 70; // Offsets for when you have anything other than 4 items
-			item.screenCenter(X);
-		}
-
-		if (leftOption != null)
-			leftItem = createMenuItem(leftOption, 60, 490);
-		if (rightOption != null)
-		{
-			rightItem = createMenuItem(rightOption, FlxG.width - 60, 490);
-			rightItem.x -= rightItem.width;
-		}
 
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
@@ -168,26 +145,11 @@ class MainMenuState extends MusicBeatState
 
 				var selectedItem:FlxSprite;
 				switch(curColumn)
-				{
-					case CENTER:
-						selectedItem = menuItems.members[curSelected];
-					case LEFT:
-						selectedItem = leftItem;
-					case RIGHT:
-						selectedItem = rightItem;
-				}
 
-				if(leftItem != null && FlxG.mouse.overlaps(leftItem))
 				{
 					allowMouse = true;
 					if(selectedItem != leftItem)
-					{
-						curColumn = LEFT;
-						changeItem();
-					}
 				}
-				else if(rightItem != null && FlxG.mouse.overlaps(rightItem))
-				{
 					allowMouse = true;
 					if(selectedItem != rightItem)
 					{
@@ -277,18 +239,7 @@ class MainMenuState extends MusicBeatState
 				var item:FlxSprite;
 				var option:String;
 				switch(curColumn)
-				{
-					case CENTER:
-						option = optionShit[curSelected];
-						item = menuItems.members[curSelected];
 
-					case LEFT:
-						option = leftOption;
-						item = leftItem;
-
-					case RIGHT:
-						option = rightOption;
-						item = rightItem;
 				}
 
 				FlxFlicker.flicker(item, 1, 0.06, false, false, function(flick:FlxFlicker)
