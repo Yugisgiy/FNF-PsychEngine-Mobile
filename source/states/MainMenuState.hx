@@ -6,7 +6,6 @@ import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
 
-}
 
 class MainMenuState extends MusicBeatState
 {
