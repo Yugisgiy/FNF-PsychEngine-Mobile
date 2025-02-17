@@ -145,7 +145,7 @@ class MainMenuState extends MusicBeatState
 
 		changeItem();
 
-		#if ACHIEVEMENTS_ALLOWED
+		//#if ACHIEVEMENTS_ALLOWED
 		Achievements.loadAchievements();
 		var leDate = Date.now();
 		if (leDate.getDay() == 5 && leDate.getHours() >= 18) {
