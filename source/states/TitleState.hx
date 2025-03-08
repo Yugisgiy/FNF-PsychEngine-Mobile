@@ -16,7 +16,6 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 
 import states.StoryMenuState;
-import states.OutdatedState;
 import states.MainMenuState;
 
 class TitleState extends MusicBeatState
