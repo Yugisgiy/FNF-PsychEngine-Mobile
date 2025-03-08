@@ -28,6 +28,9 @@ class FlashingState extends MusicBeatState
 		FlxTween.tween(warnSprite, { alpha: 1 }, 1, {
             onComplete: function(twn: FlxTween) {
                 warnSprite.alpha = 1;
+
+		addTouchPad("LEFT_RIGHT", "A_B");
+
             }
         });
 	}
