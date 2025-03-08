@@ -29,7 +29,7 @@ class FlashingState extends MusicBeatState
             onComplete: function(twn: FlxTween) {
                 warnSprite.alpha = 1;
 
-		addTouchPad("A_B");
+		addTouchPad("NONE", "A_B");
 
             }
         });
@@ -44,7 +44,7 @@ class FlashingState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = true;
 				FlxTween.tween(warnSprite, { alpha: 0 }, 1, {
 					onComplete: function(twn: FlxTween) {
-						MusicBeatState.switchState(new TitleState());
+						MusicBeatState.switchState(new MainMenuState());
 					}
 				});
 			}
