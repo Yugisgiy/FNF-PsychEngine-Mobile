@@ -44,7 +44,7 @@ class FlashingState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = true;
 				FlxTween.tween(warnSprite, { alpha: 0 }, 1, {
 					onComplete: function(twn: FlxTween) {
-						MusicBeatState.switchState(new MainMenuState());
+						MusicBeatState.switchState(new states.MainMenuState());
 					}
 				});
 			}
