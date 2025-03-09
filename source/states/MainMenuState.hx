@@ -264,7 +264,8 @@ class MainMenuState extends MusicBeatState
     }
             if (controls.justPressed('debug_1')) {
                 MusicBeatState.switchState(new MasterEditorMenu());
-            }
+	    }
+
         }
 
         if(FlxG.keys.justPressed.CONTROL)
