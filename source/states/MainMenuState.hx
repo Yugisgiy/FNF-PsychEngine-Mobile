@@ -261,6 +261,7 @@ class MainMenuState extends MusicBeatState
     {
             FlxG.sound.music.volume = Math.min(FlxG.sound.music.volume + 0.5 * elapsed, 0.8);
 
+    }
             if (controls.justPressed('debug_1')) {
                 MusicBeatState.switchState(new MasterEditorMenu());
             }
